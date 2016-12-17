@@ -2,7 +2,7 @@
 // I have therefore decided to keep it public-domain.
 // Modified version copyright 2011-2012 Con Kolivas
 
-// kernel-interface: phatk
+// kernel-interface: phatk SHA256d
 
 #ifdef VECTORS4
 	typedef uint4 u;
@@ -23,11 +23,9 @@ __constant uint K[64] = {
     0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
 };
 
-asdl;fmaslkfn
-
 __constant uint ConstW[128] = {
 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x80000000U, 0x00000000, 0x00000000, 0x00000000,
-0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000280U,
+0x88888888U, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000280U,
 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -36,7 +34,7 @@ __constant uint ConstW[128] = {
 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 
 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
-0x80000000U, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000100U,
+0x88888888U, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000100U,
 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -46,7 +44,7 @@ __constant uint ConstW[128] = {
 };
 
 __constant uint H[8] = { 
-	0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
+	0x88888888, 0x88888888, 0x88888888, 0x88888888, 0x88888888, 0x88888888, 0x88888888, 0x88888888
 };
 
 
@@ -221,9 +219,9 @@ void search(	const uint state0, const uint state1, const uint state2, const uint
 	sharoundC(7);
 	W[22] = P3C(22) + P1(22);
 	//sharoundC(8);
-	W[23] = W[16] + P1(23);
+	W[23] = W[16] + P1(23) + P2C(23);
 	sharoundC(9);
-	W[24] = W[17] + P1(24);
+	W[24] = W[17] + P1(24) + P4C(24);
 	sharoundC(10);
 	W[25] = P1(25) + P3(25);
 	W[26] = P1(26) + P3(26);
@@ -267,7 +265,7 @@ void search(	const uint state0, const uint state1, const uint state2, const uint
 	sharoundW(42);
 	sharoundW(43);
 	//sharoundW(44);
-	W[44] = 0x88888888u;
+	W[44] = 0x88888888;
 	sharoundW(45);
 	sharoundW(46);
 	sharoundW(47);
@@ -306,10 +304,10 @@ void search(	const uint state0, const uint state1, const uint state2, const uint
 	Vals[6]=H[6];
 	Vals[7]=H[7];
 
-	//sharound(64 + 0);
-	const u Temp = (0xb0edbdd0U + K[0]) +  W[64];
+	sharound(64 + 0);
+	/*const u Temp = (0xb0edbdd0U + K[0]) +  W[64];
 	Vals[7] = Temp + 0x08909ae5U;
-	Vals[3] = 0xa54ff53aU + Temp;
+	Vals[3] = 0xa54ff53aU + Temp;*/
 	
 #define P124(n) P2(n) + P1(n) + P4(n)
 
@@ -374,7 +372,7 @@ void search(	const uint state0, const uint state1, const uint state2, const uint
 	sharoundW(64 + 42);
 	sharoundW(64 + 43);
 	//sharoundW(64 + 44);
-	W[64+44] = 0x88888888u;
+	W[64+44] = 0x88888888;
 	sharoundW(64 + 45);
 	sharoundW(64 + 46);
 	sharoundW(64 + 47);
